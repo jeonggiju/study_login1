@@ -58,7 +58,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/login")
+//    @PostMapping("/login")
     public String loginV2(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletResponse response){
         if(bindingResult.hasErrors()){
             return "login/loginForm";
@@ -113,11 +113,25 @@ public class LoginController {
     }
 
 
-    @PostMapping("/logout")
+//    @PostMapping("/logout")
     public String logoutV2(HttpServletRequest request){
         sessionManager.expire(request);
         return "redirect:/";
     }
+
+    @PostMapping("/logout")
+    public String logoutV3(HttpServletRequest request){
+
+        // 세션을 삭제한다.
+        HttpSession session = request.getSession(false);
+
+        if(session != null){
+            session.invalidate();
+        }
+
+        return "redirect:/";
+    }
+
 
     private void expireCookie(HttpServletResponse response, String cookieName ){
         Cookie cookie = new Cookie(cookieName, null);
